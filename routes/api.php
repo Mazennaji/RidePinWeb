@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RideController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,12 +20,15 @@ use App\Http\Controllers\UserController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
     Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
     return $request->user();
 });
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('users', UserController::class);
     Route::apiResource('transactions', TransactionController::class);
+    Route::post('/request-ride', [RideController::class, 'requestRide']);
+    Route::get('/ride-status/{ride}', [RideController::class, 'rideStatus']);
 });
 
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
