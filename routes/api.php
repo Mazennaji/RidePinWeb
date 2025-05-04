@@ -3,8 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\RideController;
 
 /*
@@ -18,18 +16,10 @@ use App\Http\Controllers\RideController;
 |
 */
 
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/register', [AuthController::class, 'register']);
-
-
-    Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
-
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('users', UserController::class);
-    Route::apiResource('transactions', TransactionController::class);
-    Route::post('/request-ride', [RideController::class, 'requestRide']);
-    Route::get('/ride-status/{ride}', [RideController::class, 'rideStatus']);
+Route::middleware('auth:api')->group(function () {
+    Route::post('/rides', [RideController::class, 'store']); // Create Ride
+    Route::get('/rides', [RideController::class, 'index']);  // List Rides
+    Route::get('/rides/{id}', [RideController::class, 'show']); // Show Ride
+    Route::put('/rides/{id}', [RideController::class, 'update']); // Update Status
+    Route::delete('/rides/{id}', [RideController::class, 'destroy']); // Delete Ride
 });
-
-Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
